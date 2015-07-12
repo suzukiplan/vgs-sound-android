@@ -6,7 +6,7 @@ package com.suzukiplan.vgs.sound;
  */
 class VgsSoundContext {
     static {
-        System.loadLibrary("vgs");
+        System.loadLibrary("vgs2sound");
     }
 
     private static native boolean vgs_init();

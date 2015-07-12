@@ -1,7 +1,6 @@
 package com.suzukiplan.vgs.sound;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,7 +36,7 @@ public class VgsBgmPlayer {
      * @param path bgm data path (file or url)
      * @throws IOException could not load the file
      */
-    public void load(final byte slot, @NonNull final String path) throws IOException {
+    public void load(final byte slot, final String path) throws IOException {
         byte[] buffer = new byte[8192];
         InputStream inputStream;
         int size;
