@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 22
@@ -14,6 +15,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    def repo = new File(rootDir, "repository")
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository url: "file://${repo.absolutePath}"
+                pom.version = '1.0.0'
+                pom.groupId = 'com.suzukiplan'
+                pom.artifactId = 'vgs-sound-android'
+            }
         }
     }
 }
