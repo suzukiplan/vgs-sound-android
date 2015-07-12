@@ -2,7 +2,6 @@ package com.suzukiplan.vgs.sound;
 
 import android.content.Context;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,6 +27,12 @@ public class VgsBgmPlayer {
         mVgsSoundContext = VgsSoundContext.getInstance();
     }
 
+    private void checkSlotNumber(final int slot) {
+        if (slot < 0 || 255 < slot) {
+            throw new IllegalArgumentException("invalid slot number: " + slot);
+        }
+    }
+
     /**
      * /**
      * load bgm file
@@ -36,7 +41,9 @@ public class VgsBgmPlayer {
      * @param path bgm data path (file or url)
      * @throws IOException could not load the file
      */
-    public void load(final byte slot, final String path) throws IOException {
+    public void load(final int slot, final String path) throws IOException {
+        checkSlotNumber(slot);
+
         byte[] buffer = new byte[8192];
         InputStream inputStream;
         int size;
@@ -67,7 +74,8 @@ public class VgsBgmPlayer {
      *
      * @param slot bgm slot number
      */
-    public void play(final byte slot) {
+    public void play(final int slot) {
+        checkSlotNumber(slot);
         mVgsSoundContext.playBgm((int) slot);
     }
 

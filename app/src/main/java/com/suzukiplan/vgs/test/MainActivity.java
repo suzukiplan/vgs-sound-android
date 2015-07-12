@@ -1,38 +1,71 @@
 package com.suzukiplan.vgs.test;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.suzukiplan.vgs.sound.VgsBgmPlayer;
 
-public class MainActivity extends ActionBarActivity {
+import java.io.IOException;
+
+public class MainActivity extends Activity {
+    private VgsBgmPlayer mVgsBgmPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        mVgsBgmPlayer = ((VgsApplication)getApplication()).getBgmPlayer();
+        try {
+            mVgsBgmPlayer.load(0, "file:///android_asset/bgm/sample.bgm");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return super.onOptionsItemSelected(item);
+        Button button;
+
+        button = (Button) findViewById(R.id.button_play);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVgsBgmPlayer.play(0);
+            }
+        });
+
+        button = (Button) findViewById(R.id.button_stop);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVgsBgmPlayer.stop();
+            }
+        });
+
+        button = (Button) findViewById(R.id.button_resume);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVgsBgmPlayer.resume();
+            }
+        });
+
+        button = (Button) findViewById(R.id.button_fade);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mVgsBgmPlayer.fadeout();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        mVgsBgmPlayer.stop();
+        moveTaskToBack(true);
+        super.onDestroy();
     }
 }
